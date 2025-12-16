@@ -6,7 +6,7 @@ Verifies the database structure and displays sample data
 
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
-from models import Constituent, Contribution, Interaction, Opportunity, Transaction
+from models import Constituent, Contribution, Interaction, Opportunity
 
 def main():
     print("=" * 80)
@@ -60,12 +60,6 @@ def main():
     for o in opportunities:
         print(f"    {o.opportunity_id}: {o.opportunity_name} ({o.stage}) - ${o.expected_amount or 0}")
 
-    # Transactions
-    print("\n  TRANSACTIONS (first 3):")
-    transactions = session.query(Transaction).limit(3).all()
-    for t in transactions:
-        print(f"    {t.transaction_id}: ${t.amount} ({t.status}) - {t.transaction_date}")
-
     # Verify relationships
     print("\n" + "=" * 80)
     print("🔗 Relationship Verification")
@@ -82,7 +76,6 @@ def main():
     if contribution:
         print(f"\n  Testing contribution ID: {contribution.contribution_id}")
         print(f"    Constituent: {contribution.constituent.full_name if contribution.constituent else 'None'}")
-        print(f"    Transactions: {len(contribution.transactions)}")
 
     print("\n" + "=" * 80)
     print("✅ Database verification completed!")
